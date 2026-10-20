@@ -1,0 +1,22 @@
+{
+ "experiment": "exp3b",
+ "description": "Two blocks plus 1-3 bridging sets",
+ "reps": 300,
+ "results": {
+  "bridge1": {
+   "tasks": 15,
+   "sd_within": 0.1032910962167511,
+   "sd_cross": 0.16126399507875994
+  },
+  "bridge2": {
+   "tasks": 16,
+   "sd_within": 0.10111306554238036,
+   "sd_cross": 0.1340765721215913
+  },
+  "bridge3": {
+   "tasks": 17,
+   "sd_within": 0.09753584568144001,
+   "sd_cross": 0.11415250025664299
+  }
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "experiment": "exp3",
+ "description": "One joint 14-item design vs. two separate 7-item blocks",
+ "reps": 300,
+ "results": {
+  "sd_within_joint": 0.11051969278901451,
+  "sd_within_blocks": 0.10616540536747048,
+  "sd_cross_joint": 0.10920862640250249,
+  "top3_sensor_joint": 0.9966666666666667,
+  "top3_sensor_blocks": 0.9966666666666667,
+  "top3_app_joint": 1.0,
+  "top3_app_blocks": 1.0
+ }
+}

@@ -1,0 +1,133 @@
+{
+ "experiment": "exp1",
+ "description": "False positives / power of group comparisons under scale differences",
+ "reps": 200,
+ "results": {
+  "equal scale": {
+   "pc": {
+    "fp_rate_per_item": 0.04727272727272727,
+    "any_fp": 0.395,
+    "power_J": 0.055
+   },
+   "pn": {
+    "fp_rate_per_item": 0.055,
+    "any_fp": 0.305,
+    "power_J": 0.05
+   },
+   "ps": {
+    "fp_rate_per_item": 0.04363636363636364,
+    "any_fp": 0.35,
+    "power_J": 0.055
+   },
+   "mu_mean": 0.9999028475474069
+  },
+  "lam 0.8": {
+   "pc": {
+    "fp_rate_per_item": 0.14772727272727273,
+    "any_fp": 0.805,
+    "power_J": 0.105
+   },
+   "pn": {
+    "fp_rate_per_item": 0.12227272727272727,
+    "any_fp": 0.64,
+    "power_J": 0.085
+   },
+   "ps": {
+    "fp_rate_per_item": 0.04681818181818182,
+    "any_fp": 0.375,
+    "power_J": 0.045
+   },
+   "mu_mean": 0.8227162389539163
+  },
+  "lam 0.6": {
+   "pc": {
+    "fp_rate_per_item": 0.4668181818181818,
+    "any_fp": 1.0,
+    "power_J": 0.3
+   },
+   "pn": {
+    "fp_rate_per_item": 0.3231818181818182,
+    "any_fp": 0.99,
+    "power_J": 0.19
+   },
+   "ps": {
+    "fp_rate_per_item": 0.04454545454545455,
+    "any_fp": 0.385,
+    "power_J": 0.045
+   },
+   "mu_mean": 0.6316871196263694
+  },
+  "15% random responders": {
+   "pc": {
+    "fp_rate_per_item": 0.14227272727272727,
+    "any_fp": 0.835,
+    "power_J": 0.09
+   },
+   "pn": {
+    "fp_rate_per_item": 0.10363636363636364,
+    "any_fp": 0.59,
+    "power_J": 0.075
+   },
+   "ps": {
+    "fp_rate_per_item": 0.045454545454545456,
+    "any_fp": 0.375,
+    "power_J": 0.03
+   },
+   "mu_mean": 0.8197155904242635
+  },
+  "Delta 0.5, lam 1.0": {
+   "pc": {
+    "fp_rate_per_item": 0.060909090909090906,
+    "any_fp": 0.475,
+    "power_J": 0.965
+   },
+   "pn": {
+    "fp_rate_per_item": 0.05272727272727273,
+    "any_fp": 0.295,
+    "power_J": 0.85
+   },
+   "ps": {
+    "fp_rate_per_item": 0.08636363636363636,
+    "any_fp": 0.635,
+    "power_J": 0.97
+   },
+   "mu_mean": 1.0717651033144784
+  },
+  "Delta 0.5, lam 0.8": {
+   "pc": {
+    "fp_rate_per_item": 0.16318181818181818,
+    "any_fp": 0.88,
+    "power_J": 0.785
+   },
+   "pn": {
+    "fp_rate_per_item": 0.11772727272727272,
+    "any_fp": 0.625,
+    "power_J": 0.52
+   },
+   "ps": {
+    "fp_rate_per_item": 0.08045454545454546,
+    "any_fp": 0.6,
+    "power_J": 0.935
+   },
+   "mu_mean": 0.8762257442392106
+  },
+  "Delta 0.5, lam 0.6": {
+   "pc": {
+    "fp_rate_per_item": 0.4631818181818182,
+    "any_fp": 1.0,
+    "power_J": 0.265
+   },
+   "pn": {
+    "fp_rate_per_item": 0.3281818181818182,
+    "any_fp": 0.99,
+    "power_J": 0.16
+   },
+   "ps": {
+    "fp_rate_per_item": 0.07,
+    "any_fp": 0.54,
+    "power_J": 0.86
+   },
+   "mu_mean": 0.6695522508208143
+  }
+ }
+}
