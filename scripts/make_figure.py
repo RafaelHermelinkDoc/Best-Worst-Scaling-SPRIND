@@ -28,7 +28,7 @@ def load(d, exp):
 
 def main(d):
     r1, r2, r3, r3b, r5 = (load(d, e) for e in ("exp1", "exp2", "exp3", "exp3b", "exp5"))
-    fig, axs = plt.subplots(1, 3, figsize=(15, 4.9), gridspec_kw=dict(width_ratios=[1.45, 1, 1]))
+    fig, axs = plt.subplots(1, 3, figsize=(16.5, 5.2), gridspec_kw=dict(width_ratios=[1.4, 1.2, 1]))
 
     # A: false positives
     ax = axs[0]
@@ -47,8 +47,7 @@ def main(d):
         for xx, v in zip(xs, vals):
             if not np.isnan(v):
                 ax.text(xx, v + 0.015, f"{v * 100:.0f}", ha="center", va="bottom", fontsize=8, color=INK2)
-    ax.axhline(0.05, color=INK2, lw=1, ls=(0, (3, 3)), zorder=2)
-    ax.text(len(cats) - 0.45, 0.065, "nominal 5%", color=INK2, fontsize=8, ha="right")
+    ax.axhline(0.05, color=INK2, lw=1, ls=(0, (3, 3)), zorder=2, label="nominal 5%")
     ax.set_xticks(x, cats)
     ax.set_ylim(0, 1.05)
     ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0, decimals=0))
@@ -60,7 +59,7 @@ def main(d):
 
     # B: joint design vs. blocks
     ax = axs[1]
-    labs = ["one set,\n14 items", "2 blocks\n(7,4,2)", "blocks\n+1 bridge", "blocks\n+2 bridges", "blocks\n+3 bridges"]
+    labs = ["1 set\n14 items", "2 blocks\nof 7", "blocks\n+1 bridge", "blocks\n+2 bridges", "blocks\n+3 bridges"]
     tasks = [14, 14, 15, 16, 17]
     win = [r3["sd_within_joint"], r3["sd_within_blocks"]] + [r3b[f"bridge{n}"]["sd_within"] for n in (1, 2, 3)]
     crs = [r3["sd_cross_joint"], np.nan] + [r3b[f"bridge{n}"]["sd_cross"] for n in (1, 2, 3)]
@@ -69,13 +68,13 @@ def main(d):
     ax.bar(x - w / 2, win, w - 0.03, color=C1, label="within domain", zorder=3)
     ax.bar(x + w / 2, np.nan_to_num(crs), w - 0.03, color=C2, label="across domains", zorder=3)
     for xx, v in zip(x - w / 2, win):
-        ax.text(xx, v + 0.003, f"{v:.3f}", ha="center", fontsize=7.5, color=INK2)
+        ax.text(xx, v + 0.003, f"{v:.3f}", ha="center", fontsize=6.8, color=INK2)
     for xx, v in zip(x + w / 2, crs):
-        ax.text(xx, (0 if np.isnan(v) else v) + 0.003, "not\nestimable" if np.isnan(v) else f"{v:.3f}",
-                ha="center", fontsize=7.5, color=INK2)
-    ax.set_xticks(x, [f"{l}\n{t} tasks" for l, t in zip(labs, tasks)], fontsize=8)
+        ax.text(xx, (0 if np.isnan(v) else v) + 0.003, "-" if np.isnan(v) else f"{v:.3f}",
+                ha="center", fontsize=6.8, color=INK2)
+    ax.set_xticks(x, [f"{l}\n({t} tasks)" for l, t in zip(labs, tasks)], fontsize=8)
     ax.set_ylabel("SD of estimated utility differences")
-    ax.set_title("B  Precision: one joint set vs. two blocks\n(logit, N = 150, smaller = more precise)",
+    ax.set_title("B  Precision: one joint set vs. two blocks\n(logit, N = 150, smaller = more precise; - = not estimable)",
                  loc="left", fontsize=10)
     ax.grid(axis="y", color=GRID, lw=0.8, zorder=0)
     ax.legend(frameon=False, fontsize=8, loc="upper right")
@@ -85,9 +84,14 @@ def main(d):
     ax = axs[2]
     p6 = np.array(r5["example_per6"])
     p5 = np.array(r5["example_per5"])
-    bins = np.linspace(-1.0, 1.0, 10)
-    ax.hist(p5, bins=bins, color=C1, label="homogeneous item (utility -0.17)", zorder=3, rwidth=0.42)
-    ax.hist(p6, bins=bins + 0.11, color=C2, label="polarising item (mean 0)", zorder=3, rwidth=0.42)
+    vals = np.arange(-4, 5)                      # individual scores are multiples of 1/4
+    c5 = [(np.round(p5 * 4) == v).sum() for v in vals]
+    c6 = [(np.round(p6 * 4) == v).sum() for v in vals]
+    xw = 0.38
+    ax.bar(vals - xw / 2, c5, xw - 0.04, color=C1, label="homogeneous item (utility -0.17)", zorder=3)
+    ax.bar(vals + xw / 2, c6, xw - 0.04, color=C2, label="polarising item (mean 0)", zorder=3)
+    ax.set_xticks(vals, [f"{v / 4:.2f}" for v in vals], fontsize=8)
+    ax.set_ylim(0, max(c5 + c6) * 1.3)
     ax.set_xlabel("individual count score (B - W) / 4")
     ax.set_ylabel("respondents")
     ax.set_title("C  A polarising item looks average in aggregate\n(individual utility +/-1.5; one sample, N = 150)",

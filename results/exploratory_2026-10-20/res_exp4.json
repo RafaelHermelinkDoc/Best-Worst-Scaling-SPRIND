@@ -1,0 +1,25 @@
+{
+ "experiment": "exp4",
+ "description": "Cost of a dominant item for the precision of the other items",
+ "reps": 300,
+ "results": {
+  "1.0": {
+   "best_share": 0.45420555555555553,
+   "sd_pairs_others": 0.10723288668434887,
+   "top3_others_model": 0.94,
+   "top3_others_counts": 0.94
+  },
+  "2.0": {
+   "best_share": 0.6745888888888889,
+   "sd_pairs_others": 0.10873114351017159,
+   "top3_others_model": 0.9233333333333333,
+   "top3_others_counts": 0.9233333333333333
+  },
+  "3.0": {
+   "best_share": 0.8399833333333333,
+   "sd_pairs_others": 0.1100425907974813,
+   "top3_others_model": 0.91,
+   "top3_others_counts": 0.9033333333333333
+  }
+ }
+}
