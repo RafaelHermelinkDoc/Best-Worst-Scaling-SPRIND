@@ -370,6 +370,66 @@ def exp7(reps):
     return out
 
 
+# ---------------------------------------------------------------- Exp 5b
+def exp5b_rep(args):
+    """Polarising item of strength +/-amp at small N: does it have the largest
+    (or second largest) SD of individual count scores?"""
+    seed, N, amp = args
+    rng = np.random.default_rng(9000 + seed)
+    beta = np.linspace(-1, 1, 13)
+    d = simulate(BIBD13, np.arange(13), beta, N, rng, polar={6: (amp, -amp)})
+    _, per = counts(d, 13)
+    order = np.argsort(-np.nanstd(per, 0))
+    return (bool(order[0] == 6), bool(6 in order[:2]))
+
+
+def exp5b(reps):
+    out = {}
+    with Pool(WORKERS) as pool:
+        for amp in (0.75, 1.0, 1.5):
+            for N in (15, 20, 30, 50):
+                r = np.array(pool.map(exp5b_rep, [(s, N, amp) for s in range(reps)]))
+                key = f"amp{amp}_N{N}"
+                out[key] = dict(p_highest_sd=float(r[:, 0].mean()), p_top2_sd=float(r[:, 1].mean()))
+                print(key, json.dumps(out[key]), flush=True)
+    return out
+
+
+# ---------------------------------------------------------------- Exp 7b
+def exp7b_rep(args):
+    """Like exp7 (scale-adjusted single-item test), returning the p-value, with
+    optional heterogeneity SD and random responders, to evaluate power with a
+    Bonferroni correction over the 12 non-reference items (a lower bound for Holm)."""
+    seed, N, delta, lam1, rand1, eta = args
+    rng = np.random.default_rng(seed)
+    beta = np.linspace(-1, 1, 13)
+    J = 9
+    beta1 = beta.copy()
+    beta1[J] += delta
+    d0 = simulate(BIBD13, np.arange(13), beta, N, rng, group=0, eta_sd=eta)
+    d1 = simulate(BIBD13, np.arange(13), beta1, N, rng, lam=lam1, group=1, random_frac=rand1, eta_sd=eta)
+    D = Data.concat([d0, d1])
+    sp = Spec(13, 6, n_groups=2, scale=True, delta_items=[J])
+    o = fit(D, sp)
+    return float(wald_p(o["theta"][-1], o["se"][-1]))
+
+
+def exp7b(reps):
+    out = {}
+    scen = [("base", 0.8, 0.0, 0.5), ("stress", 0.8, 0.15, 1.0)]
+    with Pool(WORKERS) as pool:
+        for name, lam1, rand1, eta in scen:
+            for delta in (0.5, 0.3):
+                for N in (100, 200, 300):
+                    p = np.array(pool.map(exp7b_rep, [(7500 + i, N, delta, lam1, rand1, eta) for i in range(reps)]))
+                    key = f"{name}_d{delta}_N{N}"
+                    out[key] = dict(power_alpha05=float(np.mean(p < ALPHA)),
+                                    power_bonferroni12=float(np.mean(p < ALPHA / 12)),
+                                    lam1=lam1, random_frac=rand1, eta_sd=eta)
+                    print(key, json.dumps(out[key]), flush=True)
+    return out
+
+
 EXPERIMENTS = {
     "exp1": "False positives / power of group comparisons under scale differences",
     "exp2": "Group-specific items: bias of count-based comparison of common items",
@@ -377,11 +437,13 @@ EXPERIMENTS = {
     "exp3b": "Two blocks plus 1-3 bridging sets",
     "exp4": "Cost of a dominant item for the precision of the other items",
     "exp5": "Detecting a polarising item from individual count scores",
+    "exp5b": "Polarisation detection at soft-launch sizes for three strengths",
     "exp6": "Number of tasks per respondent vs. number of respondents",
     "exp7": "Power curve: scale-adjusted test vs. counts",
+    "exp7b": "Power with Bonferroni correction and under a stress scenario",
 }
 DEFAULT_REPS = {"exp1": 200, "exp2": 200, "exp3": 300, "exp3b": 300, "exp4": 300,
-                "exp5": 300, "exp6": 300, "exp7": 200}
+                "exp5": 300, "exp5b": 300, "exp6": 300, "exp7": 200, "exp7b": 200}
 WORKERS = 2
 
 if __name__ == "__main__":

@@ -33,8 +33,10 @@ pilot, and frozen before the main data collection (pre-registration).
 | exp3b | Two blocks plus 1-3 bridging sets |
 | exp4 | Cost of a dominant item for the precision of the other items |
 | exp5 | Detecting a polarising item from individual count scores (pilot sizes) |
+| exp5b | Polarisation detection for three strengths at N = 15-50 (soft-launch sizes) |
 | exp6 | Number of tasks per respondent vs. number of respondents |
 | exp7 | Power curve for a single-item group difference: scale-adjusted test vs. counts |
+| exp7b | Power with a Bonferroni correction over 12 items and under a stress scenario (heterogeneity SD 1.0, 15% random responders) |
 
 Designs used: BIBD(13,4,1) from the difference set {0,1,3,9} mod 13;
 BIBD(7,4,2) as complements of the Fano plane; a 4-GDD of type 2^7 for 14 items
@@ -53,8 +55,8 @@ python scripts/make_figure.py results/latest  # needs exp1, exp2, exp3, exp3b, e
 
 `--reps` defaults to the number of replications used in the reported run.
 Each replication has its own fixed seed, so results do not depend on
-`--workers`. Run times on 2 cores: exp1 about 30 min, exp7 about 15 min, all
-others 1-5 min.
+`--workers`. Run times on 2 cores: exp1 about 30 min, exp7 about 15 min, exp7b about
+10 min, all others 1-5 min.
 
 ## Reproducibility
 
